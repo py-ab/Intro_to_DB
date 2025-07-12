@@ -1,3 +1,5 @@
+      CREATE DATABASE IF NOT EXISTS alx_book_store;
+      
       USE alx_book_store;  -- IMPORTANT: Make sure you're using the right database
 
       CREATE TABLE Authors (
