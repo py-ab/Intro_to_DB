@@ -1,38 +1,48 @@
+-- Create database if it doesn't exist
+CREATE DATABASE IF NOT EXISTS alx_book_store;
 USE alx_book_store;
 
+-- Create authors table
 CREATE TABLE IF NOT EXISTS AUTHORS (
-    author_id INT PRIMARY KEY,
-    author_name VARCHAR(215)
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    NAME VARCHAR(100) NOT NULL,
+    BIO TEXT
 );
 
+-- Create books table
 CREATE TABLE IF NOT EXISTS BOOKS (
-    book_id INT PRIMARY KEY,
-    title VARCHAR(130),
-    author_id INT,
-    price DOUBLE,
-    publication_date DATE,
-    FOREIGN KEY (author_id) REFERENCES AUTHORS(author_id)
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    TITLE VARCHAR(150) NOT NULL,
+    GENRE VARCHAR(100),
+    PRICE DECIMAL(10, 2) NOT NULL,
+    STOCK INT DEFAULT 0,
+    AUTHOR_ID INT,
+    FOREIGN KEY (AUTHOR_ID) REFERENCES AUTHORS(ID)
 );
 
+-- Create customers table
 CREATE TABLE IF NOT EXISTS CUSTOMERS (
-    customer_id INT PRIMARY KEY,
-    customer_name VARCHAR(215),
-    email VARCHAR(215),
-    address TEXT
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    NAME VARCHAR(100) NOT NULL,
+    EMAIL VARCHAR(100) UNIQUE NOT NULL,
+    PHONE VARCHAR(20),
+    ADDRESS TEXT
 );
 
+-- Create orders table
 CREATE TABLE IF NOT EXISTS ORDERS (
-    order_id INT PRIMARY KEY,
-    customer_id INT,
-    order_date DATE,
-    FOREIGN KEY (customer_id) REFERENCES CUSTOMERS(customer_id)
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    CUSTOMER_ID INT NOT NULL,
+    ORDER_DATE DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (CUSTOMER_ID) REFERENCES CUSTOMERS(ID)
 );
 
+-- Create order_details table
 CREATE TABLE IF NOT EXISTS ORDER_DETAILS (
-    orderdetailid INT PRIMARY KEY,
-    order_id INT,
-    book_id INT,
-    quantity DOUBLE,
-    FOREIGN KEY (order_id) REFERENCES ORDERS(order_id),
-    FOREIGN KEY (book_id) REFERENCES BOOKS(book_id)
+    ID INT AUTO_INCREMENT PRIMARY KEY,
+    ORDER_ID INT NOT NULL,
+    BOOK_ID INT NOT NULL,
+    QUANTITY INT DEFAULT 1,
+    FOREIGN KEY (ORDER_ID) REFERENCES ORDERS(ID),
+    FOREIGN KEY (BOOK_ID) REFERENCES BOOKS(ID)
 );
