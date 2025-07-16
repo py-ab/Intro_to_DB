@@ -1,53 +1,53 @@
--- Ensure you're using the correct database
 USE alx_book_store;
 
--- Drop tables if they already exist to prevent errors
-DROP TABLE IF EXISTS ORDER_DETAILS;
-DROP TABLE IF EXISTS ORDERS;
-DROP TABLE IF EXISTS CUSTOMERS;
-DROP TABLE IF EXISTS BOOKS;
-DROP TABLE IF EXISTS AUTHORS;
+-- Drop tables if they exist to prevent errors on re-run
+DROP TABLE IF EXISTS Order_Details;
+DROP TABLE IF EXISTS Orders;
+DROP TABLE IF EXISTS Customers;
+DROP TABLE IF EXISTS Books;
+DROP TABLE IF EXISTS Authors;
 
--- Create AUTHORS table
-CREATE TABLE AUTHORS (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    NAME VARCHAR(100) NOT NULL,
-    BIO TEXT
+-- Create Authors table (based on checker requirements)
+CREATE TABLE Authors (
+    author_id INT AUTO_INCREMENT PRIMARY KEY,
+    author_name VARCHAR(100) NOT NULL,
+    bio TEXT
 );
 
--- Create BOOKS table
-CREATE TABLE BOOKS (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    TITLE VARCHAR(150) NOT NULL,
-    GENRE VARCHAR(100),
-    PRICE DECIMAL(10,2) NOT NULL,
-    STOCK INT DEFAULT 0,
-    AUTHOR_ID INT,
-    FOREIGN KEY (AUTHOR_ID) REFERENCES AUTHORS(ID)
+-- Create Books table
+CREATE TABLE Books (
+    book_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(150) NOT NULL,
+    genre VARCHAR(100),
+    price DECIMAL(10,2) NOT NULL,
+    stock INT DEFAULT 0,
+    author_id INT,
+    FOREIGN KEY (author_id) REFERENCES Authors(author_id)
 );
 
--- Create CUSTOMERS table
-CREATE TABLE CUSTOMERS (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    NAME VARCHAR(100) NOT NULL,
-    EMAIL VARCHAR(100) UNIQUE NOT NULL,
-    PHONE VARCHAR(20),
-    ADDRESS TEXT
+-- Create Customers table
+CREATE TABLE Customers (
+    customer_id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    phone VARCHAR(20),
+    address TEXT
 );
 
--- Create ORDERS table
-CREATE TABLE ORDERS (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    CUSTOMER_ID INT NOT NULL,
-    ORDER_DATE DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (CUSTOMER_ID) REFERENCES CUSTOMERS(ID)
+-- Create Orders table
+CREATE TABLE Orders (
+    order_id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT NOT NULL,
+    order_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
 );
 
--- Create ORDER_DETAILS table
-CREATE TABLE ORDER_DETAILS (
-    ID INT AUTO_INCREMENT PRIMARY KEY,
-    ORDER_ID INT NOT NULL,
-    BOOK_ID INT NOT NULL,
-    QUANTITY INT DEFAULT 1,
-    FOREIGN KEY (ORDER_ID) REFERENCES ORDERS(ID),
-    FOREIGN
+-- Create Order_Details table
+CREATE TABLE Order_Details (
+    detail_id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT NOT NULL,
+    book_id INT NOT NULL,
+    quantity INT DEFAULT 1,
+    FOREIGN KEY (order_id) REFERENCES Orders(order_id),
+    FOREIGN KEY (book_id) REFERENCES Books(book_id)
+);
